@@ -6,7 +6,7 @@ def load_tasks():
         with open("tasks.json", "r") as file:
             return json.load(file)
     except:
-        return []
+        return [] # If file does not exist, returm empty list
     
 # Save tasks to file 
 def save_tasks(tasks):
@@ -16,4 +16,44 @@ def save_tasks(tasks):
 # Add task
 def add_tasks(tasks):
     task = input("Enter a tasks: ")
-     
+# Create a dictionary for task
+    new_task = { 
+        "task": task,
+        "done": False
+    }
+
+    tasks.append(new_task)
+    print("Task added")
+
+# View Task 
+def view_tasks(tasks):
+    if len (tasks) ==0: # Check if the task list is empty
+        print("No task found")
+
+    else:
+        number = 1
+
+        for task in tasks:
+            if tasks["done"] == True:
+                status = "Done"
+
+            else:
+                status = "Not done"
+                print(str(number) + ". " + task["task"] + " - " + status)
+                number = number + 1
+
+# Remove task 
+def remove_task(tasks):
+    view_tasks(tasks)
+    number = int(input("Enter task number to remove: "))
+
+    if number > 0 and number <= len(tasks): # Check if number is valid
+        tasks.pop(number - 1)
+        print("Task remove")
+
+    else:
+        print("Invalid task number. ")
+
+# Main program
+tasks = load
+

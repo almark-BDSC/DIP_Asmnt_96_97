@@ -54,6 +54,29 @@ def remove_task(tasks):
     else:
         print("Invalid task number. ")
 
-# Main program
-tasks = load
+# Mark tasks as complete
+def mark_task(tasks):
+    view_tasks(tasks)
+    number = int(input("Enter task number to mark complete: "))
+
+    if number > 0 and number <= len(tasks): #Check if number is valid 
+
+        tasks[number - 1]["done"] = True
+        print("Task marked complete!")
+
+    else:
+        print("Invalid task number.")
+
+# Main program 
+tasks = load_tasks()
+running = True
+
+# Program loop
+while running == True:
+    print("\n--- TO-DO LIST ---")
+    print("1. Add Task")
+    print("2. Remove Task")
+    print("3. Mark Task Complete")
+    print("4. View Task")
+    print("5. Exit")
 

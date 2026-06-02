@@ -80,3 +80,30 @@ while running == True:
     print("4. View Task")
     print("5. Exit")
 
+    choice = input("Choose option: ")
+
+    # Run add task function
+    if choice == "1":
+        add_task(tasks)
+
+    # Run remove task function
+    elif choice == "2":
+        remove_task(tasks)
+
+    # Run mark task function
+    elif choice == "3":
+        mark_task(tasks)
+
+    # Run view task function
+    elif choice == "4":
+        view_tasks(tasks)
+
+    # Save and exit program
+    elif choice == "5":
+        save_tasks(tasks)
+        print("Goodbye!")
+        running = False
+
+    # Invalid option
+    else:
+        print("Invalid choice.")

@@ -34,13 +34,13 @@ def view_tasks(tasks):
         number = 1
 
         for task in tasks:
-            if tasks["done"] == True:
+            if task["done"] == True:
                 status = "Done"
+        else:
+            status = "Not Done"
+            print(str(number) + ". " + task["task"] + " - " + status)
+            number = number + 1
 
-            else:
-                status = "Not done"
-                print(str(number) + ". " + task["task"] + " - " + status)
-                number = number + 1
 # Edit task
 def edit_task(tasks):
     view_tasks(tasks)
@@ -89,12 +89,14 @@ running = True
 
 # Program loop
 while running == True:
-    print("\n--- TO-DO LIST ---")
+    print("\n========================")
+    print("      TO-DO LIST")
     print("1. Add Task")
-    print("2. Remove Task")
-    print("3. Mark Task Complete")
-    print("4. View Task")
-    print("5. Exit")
+    print("2. Edit Task")
+    print("3. Remove Task")
+    print("4. Mark Task Complete")
+    print("5. View Tasks")
+    print("6. Save and Exit")
 
     choice = input("Choose option: ")
 

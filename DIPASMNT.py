@@ -41,6 +41,22 @@ def view_tasks(tasks):
                 status = "Not done"
                 print(str(number) + ". " + task["task"] + " - " + status)
                 number = number + 1
+# Edit task
+def edit_task(tasks):
+    view_tasks(tasks)
+
+    if len(tasks) == 0:
+        return
+
+    number = int(input("Enter task number to edit: "))
+
+    if number > 0 and number <= len(tasks):
+        new_task = input("Enter new task name: ")
+        tasks[number - 1]["task"] = new_task
+        print("Task updated!")
+    else:
+        print("Invalid task number.")
+
 
 # Remove task 
 def remove_task(tasks):

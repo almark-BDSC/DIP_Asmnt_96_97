@@ -102,26 +102,30 @@ while running == True:
 
     # Run add task function
     if choice == "1":
-        add_task(tasks)
+        add_tasks(tasks)
+
+    # Run edit task function
+    elif choice == "2":
+        edit_task(tasks)
 
     # Run remove task function
-    elif choice == "2":
+    elif choice == "3":
         remove_task(tasks)
 
     # Run mark task function
-    elif choice == "3":
+    elif choice == "4":
         mark_task(tasks)
 
     # Run view task function
-    elif choice == "4":
+    elif choice == "5":
         view_tasks(tasks)
 
-    # Save and exit program
-    elif choice == "5":
+    # Save tasks and exit program
+    elif choice == "6":
         save_tasks(tasks)
         print("Goodbye!")
         running = False
 
-    # Invalid option
+    # Display error message if option is invalid
     else:
         print("Invalid choice.")

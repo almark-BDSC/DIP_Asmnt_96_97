@@ -16,7 +16,12 @@ def save_tasks(tasks):
 # Add task
 def add_tasks(tasks):
     task = input("Enter a tasks: ")
-# Create a dictionary for task
+
+    if task == "":
+        print("Task cannot be empty.")
+        return
+
+   # Create a dictionary for task 
     new_task = { 
         "task": task,
         "done": False
@@ -80,7 +85,7 @@ def mark_task(tasks):
         tasks[number - 1]["done"] = True
         print("Task marked complete!")
 
-    else:
+    else:   
         print("Invalid task number.")
 
 # Main program 

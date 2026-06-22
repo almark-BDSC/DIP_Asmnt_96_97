@@ -1,3 +1,5 @@
+import tkinter as tk 
+from tkinter import messagebox 
 import json # library to sasve and load tasks
 
 # load tasks to file 
@@ -13,12 +15,25 @@ def save_tasks(tasks):
     with open("tasks.json", "w") as file:
         json.dump(tasks, file) 
 
+# Refresh task list
+def update_listbox():
+    task_list.delete(0, tk.END)
+
+    for task in tasks:
+        if task["done"]:
+            status = "Done"
+        else:
+            status = "Not Done"
+
+        task_list.insert(tk.END, task["task"] + " - " + status)
+
+
 # Add task
 def add_tasks(tasks):
     task = input("Enter a tasks: ")
 
     if task == "":
-        print("Task cannot be empty.")
+        messagebox.showerror("Error", "Task cannot be empty.")
         return
 
    # Create a dictionary for task 
@@ -26,6 +41,8 @@ def add_tasks(tasks):
         "task": task,
         "done": False
     }
+    task_entry.delete(0, tk.END)
+    update_listbox()
 
     tasks.append(new_task)
     print("Task added")

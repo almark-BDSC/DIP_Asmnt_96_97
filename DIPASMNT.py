@@ -29,125 +29,225 @@ def update_listbox():
 
 
 # Add task
-def add_tasks(tasks):
-    task = input("Enter a tasks: ")
+def add_task():
+    task = task_entry.get()
 
-    if task == "":
-        messagebox.showerror("Error", "Task cannot be empty.")
+    if task =="":
+        messagebox.showerror("Error","Task cannot be empty.")
         return
+    
+    tasks.append({
+    "task": task,
+    "done": False
+    })
 
-   # Create a dictionary for task 
-    new_task = { 
-        "task": task,
-        "done": False
-    }
     task_entry.delete(0, tk.END)
     update_listbox()
-
-    tasks.append(new_task)
-    print("Task added")
-
-# View Task 
-def view_tasks(tasks):
-    if len (tasks) ==0: # Check if the task list is empty
-        print("No task found")
-
-    else:
-        number = 1
-
-        for task in tasks:
-            if task["done"] == True:
-                status = "Done"
-        else:
-            status = "Not Done"
-            print(str(number) + ". " + task["task"] + " - " + status)
-            number = number + 1
+          
 
 # Edit task
 def edit_task(tasks):
-    view_tasks(tasks)
+    selected = task_list.curselection()
 
-    if len(tasks) == 0:
+    if not selected:
+        messagebox.showerror("Error", "Select a task first.")
         return
+    
+    new_task = task_entry.get()
 
-    number = int(input("Enter task number to edit: "))
-
-    if number > 0 and number <= len(tasks):
-        new_task = input("Enter new task name: ")
-        tasks[number - 1]["task"] = new_task
-        print("Task updated!")
-    else:
-        print("Invalid task number.")
+    if new_task =="":
+        messagebox.showerror("Error", "Show a task name.")
+        return 
+    
+    tasks[selected[0]]["task"] = new_task
+    update_listbox()
 
 
 # Remove task 
-def remove_task(tasks):
-    view_tasks(tasks)
-    number = int(input("Enter task number to remove: "))
+def remove_task():
+    selected = task_list.curselection()
 
-    if number > 0 and number <= len(tasks): # Check if number is valid
-        tasks.pop(number - 1)
-        print("Task remove")
-
-    else:
-        print("Invalid task number. ")
+    if not selected:
+        messagebox.showerror("Error", "Select a task first.")
+        return
+    
+    tasks.pop(selected[0])
+    update_listbox()
 
 # Mark tasks as complete
-def mark_task(tasks):
-    view_tasks(tasks)
-    number = int(input("Enter task number to mark complete: "))
+def mark_task():
+     selected = task_list.curselection()
+     
+     if not selected:
+        messagebox.showerror("Error", "Select a task first.")
+        return
+     
+     tasks[selected[0]]["done"] = True
+     update_listbox()
 
-    if number > 0 and number <= len(tasks): #Check if number is valid 
+# Save when X button is pressed
+def save_exit():
+    save_tasks(tasks)
+    root.destroy()
 
-        tasks[number - 1]["done"] = True
-        print("Task marked complete!")
+# Main window
+root = tk.Tk()
+root.title("To-Do List")
+root.geometry("500x400")
 
-    else:   
-        print("Invalid task number.")
-
-# Main program 
+# Load tasks
 tasks = load_tasks()
-running = True
 
-# Program loop
-while running == True:
-    print("\n========================")
-    print("      TO-DO LIST")
-    print("1. Add Task")
-    print("2. Edit Task")
-    print("3. Remove Task")
-    print("4. Mark Task Complete")
-    print("5. View Tasks")
-    print("6. Save and Exit")
+# Title
+title = tk.Label(root, text="TO-DO LIST", font=("Arial", 18))
+title.pack(pady=10)
 
-    choice = input("Choose option: ")
+# Buttons
+tk.Button(root, text="Add Task", command=add_task).pack(pady=2)
+tk.Button(root, text="Edit Task", command=edit_task).pack(pady=2)
+tk.Button(root, text="Remove Task", command=remove_task).pack(pady=2)
+tk.Button(root, text="Mark Complete", command=mark_task).pack(pady=2)
+tk.Button(root, text="Save and Exit", command=save_tasks).pack(pady=10)
 
-    # Run add task function
-    if choice == "1":
-        add_tasks(tasks)
+# Task list
+task_list = tk.Listbox(root, width=50, height=10)
+task_list.pack(pady=10)
 
-    # Run edit task function
-    elif choice == "2":
-        edit_task(tasks)
+# Task entry box
+task_entry = tk.Entry(root, width=40)
+task_entry.pack(pady=5)
 
-    # Run remove task function
-    elif choice == "3":
-        remove_task(tasks)
+# Load tasks into listbox
+update_listbox()
 
-    # Run mark task function
-    elif choice == "4":
-        mark_task(tasks)
+# Save if user clicks X
+import tkinter as tk 
+from tkinter import messagebox 
+import json # library to sasve and load tasks
 
-    # Run view task function
-    elif choice == "5":
-        view_tasks(tasks)
+# load tasks to file 
+def load_tasks():
+    try:
+        with open("tasks.json", "r") as file:
+            return json.load(file)
+    except:
+        return [] # If file does not exist, returm empty list
+    
+# Save tasks to file 
+def save_tasks(tasks):
+    with open("tasks.json", "w") as file:
+        json.dump(tasks, file) 
 
-    # Save tasks and exit program
-    elif choice == "6":
-        save_tasks(tasks)
-        print("Goodbye!")
-        running = False
+# Refresh task list
+def update_listbox():
+    task_list.delete(0, tk.END)
 
-    # Display error message if option is invalid
-    else:
-        print("Invalid choice.")
+    for task in tasks:
+        if task["done"]:
+            status = "Done"
+        else:
+            status = "Not Done"
+
+        task_list.insert(tk.END, task["task"] + " - " + status)
+
+
+# Add task
+def add_task():
+    task = task_entry.get()
+
+    if task =="":
+        messagebox.showerror("Error","Task cannot be empty.")
+        return
+    
+    tasks.append({
+    "task": task,
+    "done": False
+    })
+
+    task_entry.delete(0, tk.END)
+    update_listbox()
+          
+
+# Edit task
+def edit_task(tasks):
+    selected = task_list.curselection()
+
+    if not selected:
+        messagebox.showerror("Error", "Select a task first.")
+        return
+    
+    new_task = task_entry.get()
+
+    if new_task =="":
+        messagebox.showerror("Error", "Show a task name.")
+        return 
+    
+    tasks[selected[0]]["task"] = new_task
+    update_listbox()
+
+
+# Remove task 
+def remove_task():
+    selected = task_list.curselection()
+
+    if not selected:
+        messagebox.showerror("Error", "Select a task first.")
+        return
+    
+    tasks.pop(selected[0])
+    update_listbox()
+
+# Mark tasks as complete
+def mark_task():
+     selected = task_list.curselection()
+     
+     if not selected:
+        messagebox.showerror("Error", "Select a task first.")
+        return
+     
+     tasks[selected[0]]["done"] = True
+     update_listbox()
+
+# Save when X button is pressed
+def save_exit():
+    save_tasks(tasks)
+    root.destroy()
+
+# Main window
+root = tk.Tk()
+root.title("To-Do List")
+root.geometry("500x400")
+
+# Load tasks
+tasks = load_tasks()
+
+# Title
+title = tk.Label(root, text="TO-DO LIST", font=("Arial", 18))
+title.pack(pady=10)
+
+# Buttons
+tk.Button(root, text="Add Task", command=add_task).pack(pady=2)
+tk.Button(root, text="Edit Task", command=edit_task).pack(pady=2)
+tk.Button(root, text="Remove Task", command=remove_task).pack(pady=2)
+tk.Button(root, text="Mark Complete", command=mark_task).pack(pady=2)
+tk.Button(root, text="Save and Exit", command=save_tasks).pack(pady=10)
+
+# Task entry box
+task_entry = tk.Entry(root, width=40)
+task_entry.pack(pady=5)
+
+# Task list
+task_list = tk.Listbox(root, width=50, height=10)
+task_list.pack(pady=10)
+
+# Load tasks into listbox
+update_listbox()
+
+# Save if user clicks X
+root.protocol("WM_DELETE_WINDOW", save_exit)
+
+# Run program
+root.mainloop()
+
+# Run program
+root.mainloop()

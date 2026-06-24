@@ -46,7 +46,7 @@ def add_task():
           
 
 # Edit task
-def edit_task(tasks):
+def edit_task():
     selected = task_list.curselection()
 
     if not selected:
